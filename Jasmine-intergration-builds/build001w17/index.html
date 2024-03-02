@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+    <link rel="stylesheet" type="text/css" href="graphics.css">
+        <link rel="stylesheet" href="css/bootstrap.css">
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+
+    
+    <link rel="icon" href="imgs/pokeb.png">
+    <script src="js/src/script-main.js"></script>
+    <title>PokeDex</title>
+<body>
+<div class="header">
+</div>
+<div class="body" id="body">
+    <div class="panel panel-danger pdpanel">
+        <div class="panel-heading title">
+            <img class="pokeb_ico"src="imgs/pokeb.png"/>
+            <span class="panel-heading">PokeDex</span>
+        </div>
+        <ul id="pokemon" class="panel-body" style="list-style: none">
+            <div class="form-group">
+                <label class="control-label"></label>
+                <div class="input-group">
+                    <span class="input-group-addon glyphicon glyphicon-search"></span>
+                    <input type="text" id="psearch" autofocus placeholder="Search for your Pokemon here." class="form-control">
+                    <span class="input-group-btn">
+                        <button id="bsearch" class="btn btn-default" type="button" onclick="p.bsearch((p.bs((document.getElementById('psearch').value).toLocaleLowerCase()), p.binfo(document.getElementById('pokemon')), p.brequest()))">Search</button>
+                    </span>
+                </div>
+            </div>
+            <span id="basic_info" style="display: none">
+                <li id="l0" class="img-thumbnail" style="float:right"> </li>
+                <div class="list-group" style="width: 360px">
+                    <li id="l1"> </li>
+                    </br>
+                    <li id="l2"> </li>
+                    </br>
+                    <li id="l3"> </li>
+                    </br>
+                    <li id="l4"> </li>
+                </div>
+                <a href="#demo" id="adv_btn" class="glyphicon glyphicon-chevron-down" onclick="p.adv_config()" data-target="#demo" data-toggle="collapse"></a>
+            </span>
+            <p></br></br></p>
+            <ul class="panel panel-danger panel-body" style="border-left: none; border-right:none; border-bottom:none; padding: 0px; margin: 0px;">
+                <div id="demo" class="collapse">
+                    <div class="panel-heading title">
+                        <h1 class="panel-heading">Advanced Information <span style="height: 20px; width: 60px" class="label label-success">New</span> </h1>
+                    </div>
+                    <span class="adinfo" id="adinfo_h"></span>
+                    <span class="adinfo" id="adinfo_w"></span> 
+                    <span class="adinfo" id="adinfo_a"></span>
+                </div>
+            </ul>
+        </ul>
+    </div>
+<div id="alerts" style="display:none" class="label alert alert-warning" role="alert">...</div>
+
+    <script>
+    </script>
+
+</div>
+</body>
+</html>

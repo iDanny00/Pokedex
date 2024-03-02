@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+    <link rel="stylesheet" type="text/css" href="graphics.css">
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <link rel="icon" href="imgs/pokeb.png">
+    <title>PokeDex</title>
+<body>
+<div class="header">
+</div>
+<div class="body" id="body">
+    <div class="panel panel-danger pdpanel">
+        <div class="panel-heading title">
+            <img class="pokeb_ico"src="imgs/pokeb.png"/>
+            <span class="panel-heading">PokeDex</span>
+        </div>
+        <ul id="pokemon" class="panel-body" style="list-style: none">
+            <div class="form-group">
+                <label class="control-label"></label>
+                <div class="input-group">
+                    <span class="input-group-addon glyphicon glyphicon-search"></span>
+                    <input type="text" id="psearch" autofocus placeholder="Search for your Pokemon here." class="form-control">
+                    <span class="input-group-btn">
+                        <button id="bsearch" class="btn btn-default" type="button" onclick="psearch()">Search</button>
+                    </span>
+                </div>
+            </div>
+            <span id="basic_info" style="display: none">
+                <li id="l0" class="img-thumbnail" style="float:right"> </li>
+                <div class="list-group" style="width: 360px">
+                    <li id="l1"> </li>
+                    </br>
+                    <li id="l2"> </li>
+                    </br>
+                    <li id="l3"> </li>
+                    </br>
+                    <li id="l4"> </li>
+                </div>
+                <a href="#demo" id="adv_btn" class="glyphicon glyphicon-chevron-down" onclick="expand()" data-target="#demo" data-toggle="collapse"></a>
+            </span>
+            <p></br></br></p>
+            <ul class="panel panel-danger panel-body" style="border-left: none; border-right:none; border-bottom:none; padding: 0px; margin: 0px;">
+                <div id="demo" class="collapse">
+                    <div class="panel-heading title">
+                        <h1 class="panel-heading">Advanced Information <span style="height: 20px; width: 60px" class="label label-success">New</span> </h1>
+                    </div>
+                    <span class="adinfo" id="adinfo_h"></span>
+                    <span class="adinfo" id="adinfo_w"></span> 
+                    <span class="adinfo" id="adinfo_a"></span>
+                </div>
+            </ul>
+        </ul>
+    </div>
+
+    <script>
+        var ccount = 0;
+        var s = document.getElementById("bsearch");
+        const url = "http://pokeapi.co/api/v2/pokemon/"
+        var pdata = "";
+        function psearch() {
+            var stext = (document.getElementById("psearch").value).toLocaleLowerCase();
+            var info = (document.getElementById("pokemon")),
+                items = info.childNodes;
+            const ul = document.getElementById("pokemon");
+            var request = (url + stext + "/")
+            
+            var ps = new XMLHttpRequest();
+            //console.log(url + stext);
+            ps.open("GET", request, false);
+            ps.send();
+
+            var pdata = JSON.parse(ps.responseText); 
+            //console.log(psdata.name);
+            //console.log(psdata.id);
+            //console.log(psdata);
+
+            var types = pdata.types.map(function(ptype){
+                return(ptype.type.name)
+            });
+
+            if (pdata.id.toString().length == 1) {
+                var imgd = "00" + (pdata.id); 
+            } else if (pdata.id.toString().length == 2) {
+                var imgd = "0" + (pdata.id);
+            } else {
+                imgd = pdata.id.toString();
+            }
+            console.log(imgd);
+            
+            document.getElementById('basic_info').style.display = "unset";
+            
+            document.getElementById("l1").innerHTML = ("<li id='l1' class='list-group-item lgi'>Pokemon Name:  -  <span style='border=none;' class='lgi_info'>" + pdata.name.charAt(0).toUpperCase() + pdata.name.slice(1) + "</span></li>");
+            document.getElementById("l2").innerHTML = ("<li id='l2' class='list-group-item lgi'>Pokemon Index:  -  #<span style='border=none;' class='lgi_info'>" + imgd + "</span></li>");
+            document.getElementById("l3").innerHTML = ("<li id='l3' class='list-group-item lgi'>Pokemon Type:  -  <span style='border=none;' class='lgi_info'>" + types.join(", ") + "</span></li>");
+            document.getElementById("l4").innerHTML = ("<li id='l4' class='list-group-item lgi'>Pokemon Weight:  -  <span style='border=none;' class='lgi_info'>" + pdata.weight + "kg </span></li>");
+            document.getElementById("l0").innerHTML = ("<img src=" + "http://assets.pokemon.com//assets/cms2/img/pokedex/detail/" + imgd + ".png" + "/>");
+            scollapse();
+            return(pdata);
+        }
+        document.getElementById("body").onkeydown = function(event) {
+            if (event.keyCode == 13) {
+                //console.log("Enter")
+                psearch();
+                scollapse();
+            }
+        }
+
+        function scollapse() {
+            document.getElementById('adv_btn').style.display = "unset";
+        }
+        function expand() {
+            if (ccount == 0) {
+                //console.log("down");
+                ccount++;
+                document.getElementById("adv_btn").className = "glyphicon glyphicon-chevron-up";
+                //console.log("ccount = " + ccount);
+            } else if (ccount > 0) {
+                //console.log("Up");
+                ccount = 0;
+                document.getElementById("adv_btn").className = "glyphicon glyphicon-chevron-down";
+                //console.log("ccount = " + ccount);
+            }
+            var stext = (document.getElementById("psearch").value).toLocaleLowerCase();
+            var request = (url + stext + "/")
+            var ps = new XMLHttpRequest();
+            //console.log(url + stext);
+            ps.open("GET", request, false);
+            ps.send();
+            var pdata = JSON.parse(ps.responseText); 
+
+            var abili = pdata.abilities.map(function(ptype){
+                return(ptype.ability.name)
+            });
+
+
+            //console.log(pdata.height);
+            document.getElementById("adinfo_h").innerHTML = ("<span class='adinfo_h' id='adinfo_h'>Height : </span>" + "<span class='badge'>" + (pdata.height) + "</span>");
+            document.getElementById("adinfo_w").innerHTML = ("<br/><br/><span class='adinfo_w' id='adinfo_w'>Weight : </span> " + "<span class='badge'>" + (pdata.weight) + " kg </span>");
+            document.getElementById("adinfo_a").innerHTML = ("<br/><br/><span class='adinfo_a' id='adinfo_a'>Abilities : </span>" + "<span class='badge'>" + (abili.join(' / ')) + "</span>");
+        }
+    </script>
+
+</div>
+</body>
+</html>
